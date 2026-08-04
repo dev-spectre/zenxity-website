@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model User {
+  id           String  @id @default(uuid())
+  name         String
+  email        String  @unique
+  password     String? // Nullable for OAuth users
+  mobileNumber String? @map("mobile_number")
+
+  // OAuth fields
+  googleId       String? @unique @map("google_id")
+  profilePicture String? @map("profile_picture")
+
+  // Auth fields
+  isVerified           Boolean   @default(false) @map("is_verified")
+  resetPasswordToken   String?   @map("reset_password_token")
+  resetPasswordExpires DateTime? @map("reset_password_expires")
+
+  // Bank details
+  bankName      String?   @map("bank_name")
+  accountNumber String?   @map("account_number")
+  ifscCode      String?   @map("ifsc_code")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  requests         FarmingRequest[]
+  documents        Document[]
+  financialRecords FinancialRecord[]
+
+  @@map("users")
+}
+
+model Offer {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  validUntil  String
+  img         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum FarmingRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model FarmingRequest {
+  id                String               @id @default(uuid())
+  userId            String
+  status            FarmingRequestStatus @default(PENDING)
+  landSize          String
+  preferredLanguage String
+  landAddress       String
+  notes             String?
+  progress          Int                  @default(0)
+  surveyNo          String?              @map("survey_no")
+  pattaNo           String?              @map("patta_no")
+  legalInfo         String?              @map("legal_info")
+  milestones        String?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  updates   FarmingUpdates[]
+  documents Document[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model FarmingUpdates {
+  id           String   @id @default(uuid())
+  title        String
+  content      String?
+  description  String?
+  img          String?
+  video        String?
+  landInfo     String?  @map("land_info")
+  activityDate String?  @map("activity_date")
+  activityTime String?  @map("activity_time")
+  requestId    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  request FarmingRequest @relation(fields: [requestId], references: [id])
+}
+
+model Document {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  fileUrl   String
+  status    String   @default("Pending Verification")
+  requestId String?  @map("request_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User            @relation(fields: [userId], references: [id])
+  request FarmingRequest? @relation(fields: [requestId], references: [id])
+}
+
+model FinancialRecord {
+  id          String   @id @default(uuid())
+  userId      String
+  description String
+  amount      Float
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}

@@ -1,0 +1,150 @@
+/** @import must precede all other statements */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Tailwind CSS theme
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   * A different format will require also updating the theme in tailwind.config.ts.
+  */
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 15 23% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 15 23% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 15 23% 15%;
+
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 184 40% 95%;
+    --secondary-foreground: 15 23% 15%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 143 72% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 40% 93%;
+    --input: 210 40% 96%;
+    --ring: 143 55% 42%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 15 23% 15%;
+
+    --sidebar-primary: 143 55% 42%;
+
+    --sidebar-primary-foreground: 0 0% 100%;
+
+    --sidebar-accent: 184 40% 90%;
+
+    --sidebar-accent-foreground: 15 23% 15%;
+
+    --sidebar-border: 210 40% 93%;
+
+    --sidebar-ring: 143 55% 42%;
+  }
+
+  .dark {
+    --background: 15 23% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 15 23% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 15 23% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 142 76% 45%;
+    --primary-foreground: 15 23% 10%;
+
+    --secondary: 184 40% 25%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 215 25% 30%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 143 72% 55%;
+    --accent-foreground: 15 23% 10%;
+
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 15 23% 20%;
+    --input: 15 23% 20%;
+    --ring: 143 55% 50%;
+    --sidebar-background: 15 23% 10%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 143 55% 50%;
+    --sidebar-primary-foreground: 15 23% 10%;
+    --sidebar-accent: 184 40% 25%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 15 23% 20%;
+    --sidebar-ring: 143 55% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Global Form Styling */
+  .form-container {
+    @apply bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 p-8;
+  }
+
+  .premium-input {
+    @apply w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600 text-base transition-colors !important;
+  }
+
+  .premium-label {
+    @apply block text-sm font-semibold text-foreground mb-1.5 !important;
+  }
+
+  /* Style all form elements to match the premium theme by default where appropriate */
+  textarea:not(.compact), 
+  select:not(.compact) {
+    @apply premium-input;
+  }
+
+  :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  pre,
+  code {
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* Remove number spinners from all inputs */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+}
